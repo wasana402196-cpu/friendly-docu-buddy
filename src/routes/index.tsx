@@ -15,15 +15,13 @@ import { SpecializationPills } from "@/components/caddy/SpecializationPills";
 import { DoctorCarousel } from "@/components/caddy/DoctorCarousel";
 import { QueueTeaser } from "@/components/caddy/QueueTeaser";
 import { CallDoctorAnimation } from "@/components/caddy/CallDoctorAnimation";
+import { VisitJourney } from "@/components/caddy/VisitJourney";
 import { DemoBadge, PageShell, Reveal, spring } from "@/components/caddy/PageShell";
-import { ServiceCard } from "@/components/clinic/ServiceCard";
 import { FaqItem } from "@/components/clinic/FaqItem";
 import {
   CLINIC,
   FAQ,
-  JOURNEY,
   PAYMENT_METHODS,
-  SERVICES,
   STERILIZATION,
   WHAT_TO_BRING,
 } from "@/lib/clinic-data";
@@ -42,6 +40,8 @@ export const Route = createFileRoute("/")({
         property: "og:description",
         content: "Book a check-up, see indicative prices and meet our dental team.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Home,
@@ -145,29 +145,13 @@ function Home() {
             Pick your treatment
           </span>
           <h2 className="mt-3 font-hero text-4xl uppercase sm:text-5xl">What brings you in today?</h2>
-          <p className="mt-2 text-sm text-muted-foreground">Tap a card to start booking · illustrations, demo clinic</p>
+          <p className="mt-2 text-sm text-muted-foreground">Know what you need? Pick a visit below. Unsure? Tell Caddy in your own words.</p>
         </div>
         <SpecializationPills />
-      </section>
-
-      {/* SERVICES */}
-      <section className="pt-16">
-        <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
-          <div>
-            <h2 className="text-3xl font-extrabold sm:text-4xl">Popular treatments</h2>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Indicative demo rates in PKR — your dentist confirms the final cost after examination.
-            </p>
-          </div>
-          <Link to="/services" className="rounded-full bg-secondary px-4 py-2 text-sm font-bold">
-            All 12 services →
-          </Link>
-        </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {SERVICES.slice(0, 6).map((s, i) => (
-            <ServiceCard key={s.id} service={s} index={i} />
-          ))}
-        </div>
+        <p className="mt-5 text-center text-sm text-muted-foreground">
+          Comparing treatments, time or indicative demo rates?{" "}
+          <Link to="/services" className="font-extrabold text-primary underline underline-offset-4">Explore all services</Link>
+        </p>
       </section>
 
       {/* DENTISTS */}
@@ -175,19 +159,7 @@ function Home() {
         <DoctorCarousel />
       </div>
 
-      {/* JOURNEY */}
-      <section className="pt-16">
-        <h2 className="text-center text-3xl font-extrabold">Your visit, step by step</h2>
-        <ol className="mt-8 grid gap-4 md:grid-cols-4">
-          {JOURNEY.map((j, i) => (
-            <Reveal key={j.step} delay={i * 0.1} className="glass-card relative rounded-3xl p-5">
-              <span className="font-hero text-4xl text-primary/80">0{i + 1}</span>
-              <h3 className="mt-2 text-lg font-extrabold">{j.step}</h3>
-              <p className="mt-1 text-sm text-muted-foreground">{j.body}</p>
-            </Reveal>
-          ))}
-        </ol>
-      </section>
+      <VisitJourney />
 
       {/* QUEUE */}
       <div className="pt-16">
