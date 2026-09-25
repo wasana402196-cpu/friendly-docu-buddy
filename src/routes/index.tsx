@@ -16,6 +16,7 @@ import { DoctorCarousel } from "@/components/caddy/DoctorCarousel";
 import { QueueTeaser } from "@/components/caddy/QueueTeaser";
 import { CallDoctorAnimation } from "@/components/caddy/CallDoctorAnimation";
 import { VisitJourney } from "@/components/caddy/VisitJourney";
+import { CaddyIntroduction, FloatingCaddy } from "@/components/caddy/CaddyIntroduction";
 import { DemoBadge, PageShell, Reveal, spring } from "@/components/caddy/PageShell";
 import { FaqItem } from "@/components/clinic/FaqItem";
 import {
@@ -138,6 +139,8 @@ function Home() {
         </div>
       </section>
 
+      <CaddyIntroduction />
+
       {/* QUICK PICK */}
       <section className="pt-16">
         <div className="mb-8 text-center">
@@ -243,6 +246,7 @@ function Home() {
         </div>
         <CallDoctorAnimation className="mx-auto" />
       </Reveal>
+      <FloatingCaddy />
     </PageShell>
   );
 }
