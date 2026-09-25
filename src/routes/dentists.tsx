@@ -11,6 +11,8 @@ export const Route = createFileRoute("/dentists")({
       { name: "description", content: "Meet the family, root-canal, orthodontic and oral-surgery dentists at Crescent & Pearl (demo profiles)." },
       { property: "og:title", content: "Our dentists — Crescent & Pearl Dental" },
       { property: "og:description", content: "Specialties, languages and next available times for each dentist." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: DentistsPage,

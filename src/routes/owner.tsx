@@ -13,6 +13,8 @@ export const Route = createFileRoute("/owner")({
       { property: "og:title", content: "Clinic owner view (demo) — Crescent & Pearl" },
       { property: "og:description", content: "How a clinic owner sees performance and settings, with synthetic data." },
       { name: "robots", content: "noindex" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Owner,

@@ -11,6 +11,8 @@ export const Route = createFileRoute("/about")({
       { name: "description", content: "How Crescent & Pearl sterilizes instruments, protects your privacy and supports families and guardians." },
       { property: "og:title", content: "About & safety — Crescent & Pearl Dental" },
       { property: "og:description", content: "Calm, precise, modern family dentistry with specialist access." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: AboutPage,

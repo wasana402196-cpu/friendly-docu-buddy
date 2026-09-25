@@ -21,6 +21,8 @@ export const Route = createFileRoute("/signup")({
         property: "og:description",
         content: "Join 12,400 patients booking care without the lobby wait.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: SignupPage,

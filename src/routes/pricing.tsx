@@ -9,6 +9,8 @@ export const Route = createFileRoute("/pricing")({
       { name: "description", content: "Transparent indicative dental rates in Pakistani rupees, with duration and consultation requirements." },
       { property: "og:title", content: "Indicative pricing — Crescent & Pearl Dental" },
       { property: "og:description", content: "Every treatment's indicative PKR rate in one clear table." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: PricingPage,
