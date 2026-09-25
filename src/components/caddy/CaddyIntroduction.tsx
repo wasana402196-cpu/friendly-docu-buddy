@@ -11,27 +11,84 @@ export function scrollToCaddy() {
 export function CaddyIntroduction() {
   const reducedMotion = useReducedMotion();
   return (
-    <section aria-labelledby="meet-caddy" className="relative mt-14 overflow-hidden border-y border-primary/25 bg-primary/10 py-9 sm:py-12">
-      <div className="pointer-events-none absolute inset-0 clinic-grain opacity-50" aria-hidden />
-      <div className="relative mx-auto grid max-w-5xl items-center gap-4 px-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] sm:gap-10 sm:px-8">
-        <motion.div initial={reducedMotion ? false : { opacity: 0, x: -60 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.25 }} transition={{ duration: 0.7, ease: "easeOut" }} className="relative mx-auto flex h-56 w-full max-w-72 items-end justify-center sm:h-80">
-          <span className="caddy-signal absolute bottom-6 left-1/2 size-36 -translate-x-1/2 rounded-full border border-primary/50" aria-hidden />
-          <span className="caddy-signal caddy-signal-delay absolute bottom-6 left-1/2 size-36 -translate-x-1/2 rounded-full border border-primary/50" aria-hidden />
-          <span className="absolute bottom-1 h-14 w-52 rounded-full bg-gold/40 blur-xl" aria-hidden />
-          <motion.img src={companion} alt="Caddy waves hello" width={816} height={816} loading="lazy" className="relative z-10 h-full w-full object-contain object-bottom drop-shadow-xl" animate={reducedMotion ? false : { y: [0, -9, 0], rotate: [0, 1.5, 0] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }} />
-        </motion.div>
-        <motion.div initial={reducedMotion ? false : { opacity: 0, x: 60 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.25 }} transition={{ duration: 0.7, ease: "easeOut", delay: 0.12 }}>
-          <p className="flex items-center gap-2 text-xs font-extrabold uppercase text-primary"><span className="flex h-6 items-center gap-0.5" aria-hidden>{[10, 19, 13, 23, 12].map((height, i) => <span key={i} className="caddy-wave w-1 rounded-full bg-primary" style={{ height, animationDelay: `${i * 0.12}s` }} />)}</span> Meet your guide</p>
-          <h2 id="meet-caddy" className="mt-3 font-hero text-4xl uppercase leading-tight sm:text-5xl">Hi, I’m Caddy.<br /><span className="text-primary">Tell me what’s going on.</span></h2>
-          <p className="mt-4 max-w-lg text-base leading-relaxed">Not sure which visit to choose? Tell me in your own words. I’ll help you find a place to start, then you can book when you’re ready.</p>
-          <p className="mt-2 text-xs text-muted-foreground">Demo text guide only · no voice or live person yet · your words aren’t saved.</p>
-          <div className="mt-5 flex flex-wrap gap-3">
-            <Button type="button" onClick={scrollToCaddy} className="h-11 rounded-md px-5 font-extrabold"><MessageCircle aria-hidden /> Talk to Caddy <ArrowDown aria-hidden /></Button>
-            <Button asChild variant="outline" className="h-11 rounded-md px-5 font-extrabold"><Link to="/book"><CalendarDays aria-hidden /> Book a visit</Link></Button>
-          </div>
+    <motion.section
+      aria-labelledby="meet-caddy"
+      initial={reducedMotion ? false : { opacity: 0, scale: 0.94, y: 26 }}
+      whileInView={{ opacity: 1, scale: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.35 }}
+      transition={{ duration: 0.55, ease: "easeOut" }}
+      className="glass-card mt-10 grid items-center gap-4 rounded-4xl px-5 py-6 sm:grid-cols-[auto_1fr] sm:gap-8 sm:px-8 sm:py-7"
+    >
+      <motion.div
+        initial={reducedMotion ? false : { opacity: 0, scale: 0.6, rotate: -10 }}
+        whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+        viewport={{ once: true, amount: 0.35 }}
+        transition={{ type: "spring", stiffness: 200, damping: 15 }}
+        className="relative mx-auto flex size-32 items-center justify-center sm:size-40"
+      >
+        <span className="caddy-signal absolute inset-0 rounded-full border border-primary/50" aria-hidden />
+        <motion.img
+          src={companion}
+          alt="Caddy waves hello"
+          width={816}
+          height={816}
+          loading="lazy"
+          className="relative z-10 h-full w-full object-contain"
+          animate={reducedMotion ? false : { y: [0, -7, 0] }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        />
+      </motion.div>
+      <div>
+        <motion.p
+          initial={reducedMotion ? false : { opacity: 0, scale: 0.8 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, amount: 0.35 }}
+          transition={{ duration: 0.4, delay: 0.1, ease: "easeOut" }}
+          className="flex items-center gap-2 text-xs font-extrabold uppercase text-primary"
+        >
+          <span className="flex h-5 items-center gap-0.5" aria-hidden>
+            {[10, 17, 12, 20, 11].map((height, i) => (
+              <span key={i} className="caddy-wave w-1 rounded-full bg-primary" style={{ height, animationDelay: `${i * 0.12}s` }} />
+            ))}
+          </span>
+          Meet your guide
+        </motion.p>
+        <motion.h2
+          id="meet-caddy"
+          initial={reducedMotion ? false : { opacity: 0, x: 40 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.35 }}
+          transition={{ duration: 0.5, delay: 0.14, ease: "easeOut" }}
+          className="mt-2 font-hero text-2xl uppercase leading-tight sm:text-3xl"
+        >
+          Hi, I’m Caddy. <span className="text-primary">Tell me what’s going on.</span>
+        </motion.h2>
+        <motion.p
+          initial={reducedMotion ? false : { opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.35 }}
+          transition={{ duration: 0.45, delay: 0.22, ease: "easeOut" }}
+          className="mt-2 max-w-lg text-sm leading-relaxed text-muted-foreground"
+        >
+          Unsure which visit fits? Describe it in your own words and I’ll point you to a start.
+          <span className="mt-1 block text-[11px]">Demo text guide only · no voice or live person yet · your words aren’t saved.</span>
+        </motion.p>
+        <motion.div
+          initial={reducedMotion ? false : { opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.35 }}
+          transition={{ duration: 0.45, delay: 0.3, ease: "easeOut" }}
+          className="mt-4 flex flex-wrap gap-3"
+        >
+          <Button type="button" onClick={scrollToCaddy} className="h-10 rounded-md px-4 text-sm font-extrabold">
+            <MessageCircle aria-hidden /> Talk to Caddy <ArrowDown aria-hidden />
+          </Button>
+          <Button asChild variant="outline" className="h-10 rounded-md px-4 text-sm font-extrabold">
+            <Link to="/book"><CalendarDays aria-hidden /> Book a visit</Link>
+          </Button>
         </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 }
 
