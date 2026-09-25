@@ -142,7 +142,13 @@ function Home() {
       <CaddyIntroduction />
 
       {/* QUICK PICK */}
-      <section className="pt-16">
+      <motion.section
+        initial={{ opacity: 0, scale: 0.94 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true, amount: 0.25 }}
+        transition={{ type: "spring", stiffness: 160, damping: 18 }}
+        className="pt-16"
+      >
         <div className="mb-8 text-center">
           <span className="rounded-full bg-primary/15 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">
             Pick your treatment
@@ -155,19 +161,31 @@ function Home() {
           Comparing treatments, time or indicative demo rates?{" "}
           <Link to="/services" className="font-extrabold text-primary underline underline-offset-4">Explore all services</Link>
         </p>
-      </section>
+      </motion.section>
 
       {/* DENTISTS */}
-      <div className="pt-16">
+      <motion.div
+        initial={{ opacity: 0, x: -70 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true, amount: 0.15 }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+        className="pt-16"
+      >
         <DoctorCarousel />
-      </div>
+      </motion.div>
 
       <VisitJourney />
 
       {/* QUEUE */}
-      <div className="pt-16">
+      <motion.div
+        initial={{ opacity: 0, x: 70 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true, amount: 0.15 }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+        className="pt-16"
+      >
         <QueueTeaser />
-      </div>
+      </motion.div>
 
       {/* SAFETY + BRING */}
       <section className="grid gap-4 pt-16 lg:grid-cols-3">
