@@ -9,7 +9,6 @@ import {
   HeartHandshake,
   ShieldCheck,
   Sparkles,
-  Users,
 } from "lucide-react";
 import { HeroCaddy } from "@/components/caddy/HeroCaddy";
 import { SpecializationPills } from "@/components/caddy/SpecializationPills";
@@ -26,7 +25,6 @@ import {
   PAYMENT_METHODS,
   SERVICES,
   STERILIZATION,
-  TRUST,
   WHAT_TO_BRING,
 } from "@/lib/clinic-data";
 
@@ -49,7 +47,6 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
-const TRUST_ICONS = [ClipboardList, ShieldCheck, Users, CheckCircle2];
 
 function Home() {
   return (
@@ -141,25 +138,15 @@ function Home() {
         </div>
       </section>
 
-      {/* TRUST */}
-      <section className="grid gap-3 pt-14 sm:grid-cols-2 lg:grid-cols-4">
-        {TRUST.map((t, i) => {
-          const Icon = TRUST_ICONS[i]!;
-          return (
-            <Reveal key={t.title} delay={i * 0.06} className="glass-card rounded-3xl p-5">
-              <span className="grid size-10 place-items-center rounded-2xl bg-primary/15 text-primary">
-                <Icon aria-hidden className="size-5" />
-              </span>
-              <h3 className="mt-3 font-extrabold">{t.title}</h3>
-              <p className="mt-1 text-sm text-muted-foreground">{t.body}</p>
-            </Reveal>
-          );
-        })}
-      </section>
-
       {/* QUICK PICK */}
-      <section className="pt-14">
-        <h2 className="mb-5 text-center text-2xl font-extrabold">What brings you in today?</h2>
+      <section className="pt-16">
+        <div className="mb-8 text-center">
+          <span className="rounded-full bg-primary/15 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">
+            Pick your treatment
+          </span>
+          <h2 className="mt-3 font-hero text-4xl uppercase sm:text-5xl">What brings you in today?</h2>
+          <p className="mt-2 text-sm text-muted-foreground">Tap a card to start booking · illustrations, demo clinic</p>
+        </div>
         <SpecializationPills />
       </section>
 
