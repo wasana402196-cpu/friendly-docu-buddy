@@ -21,6 +21,8 @@ export const Route = createFileRoute("/onboarding")({
         property: "og:description",
         content: "A three-step profile that makes every future visit faster.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: OnboardingPage,

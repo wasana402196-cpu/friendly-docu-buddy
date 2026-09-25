@@ -22,6 +22,8 @@ export const Route = createFileRoute("/doctor")({
         property: "og:description",
         content: "Every patient's history, shared reports and risk flags in one screen.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: DoctorConsole,

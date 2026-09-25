@@ -12,6 +12,8 @@ export const Route = createFileRoute("/services")({
       { name: "description", content: "Check-ups, cleaning, fillings, root canals, crowns, whitening, braces and children's dentistry with indicative PKR rates." },
       { property: "og:title", content: "Dental services — Crescent & Pearl Dental" },
       { property: "og:description", content: "Twelve dental treatments with duration, indicative price and booking." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: ServicesPage,

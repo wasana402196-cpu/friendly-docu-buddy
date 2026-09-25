@@ -27,6 +27,8 @@ export const Route = createFileRoute("/queue")({
         property: "og:description",
         content: "An animated token board that tells you exactly when to leave.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: QueuePage,

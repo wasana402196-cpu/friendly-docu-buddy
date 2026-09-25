@@ -10,6 +10,8 @@ export const Route = createFileRoute("/contact")({
       { name: "description", content: "Phone, WhatsApp, address and demo opening hours for Crescent & Pearl Dental." },
       { property: "og:title", content: "Contact — Crescent & Pearl Dental" },
       { property: "og:description", content: "Reach the clinic or book an appointment online." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: ContactPage,

@@ -14,6 +14,8 @@ export const Route = createFileRoute("/reception")({
       { property: "og:title", content: "Reception workspace (demo) — Crescent & Pearl" },
       { property: "og:description", content: "Fast scanning front-desk tools with synthetic data." },
       { name: "robots", content: "noindex" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Reception,

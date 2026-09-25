@@ -20,6 +20,8 @@ export const Route = createFileRoute("/book")({
       { name: "description", content: "Book a dental visit in five short steps: treatment, dentist, time, your details and review." },
       { property: "og:title", content: "Book an appointment — Crescent & Pearl Dental" },
       { property: "og:description", content: "Choose treatment, dentist and a time that suits you." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: BookPage,
