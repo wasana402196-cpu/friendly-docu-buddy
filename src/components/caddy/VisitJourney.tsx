@@ -82,7 +82,7 @@ export function VisitJourney() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ delay: reducedMotion ? 0 : i * 0.09, duration: 0.4 }}
-            whileHover={reducedMotion ? undefined : { y: -5 }}
+            whileHover={reducedMotion ? {} : { y: -5 }}
             className="relative flex min-h-[290px] flex-col overflow-hidden rounded-lg border border-border bg-card p-4 shadow-[var(--shadow-card)]"
           >
             <div className={`relative grid h-36 place-items-center overflow-hidden rounded-md ${scene.tone}`}>
