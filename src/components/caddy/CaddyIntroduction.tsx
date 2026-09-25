@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from "motion/react";
 import { ArrowDown, CalendarDays, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "@tanstack/react-router";
 import companion from "@/assets/caddy-companion.png";
 
 export function scrollToCaddy() {
@@ -17,7 +18,7 @@ export function CaddyIntroduction() {
           <span className="caddy-signal absolute bottom-6 left-1/2 size-36 -translate-x-1/2 rounded-full border border-primary/50" aria-hidden />
           <span className="caddy-signal caddy-signal-delay absolute bottom-6 left-1/2 size-36 -translate-x-1/2 rounded-full border border-primary/50" aria-hidden />
           <span className="absolute bottom-1 h-14 w-52 rounded-full bg-gold/40 blur-xl" aria-hidden />
-          <motion.img src={companion} alt="Caddy waves hello" width={816} height={816} loading="lazy" className="relative z-10 h-full w-full object-contain object-bottom drop-shadow-xl" animate={reducedMotion ? undefined : { y: [0, -9, 0], rotate: [0, 1.5, 0] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }} />
+          <motion.img src={companion} alt="Caddy waves hello" width={816} height={816} loading="lazy" className="relative z-10 h-full w-full object-contain object-bottom drop-shadow-xl" animate={reducedMotion ? false : { y: [0, -9, 0], rotate: [0, 1.5, 0] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }} />
         </motion.div>
         <motion.div initial={reducedMotion ? false : { opacity: 0, x: 60 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.25 }} transition={{ duration: 0.7, ease: "easeOut", delay: 0.12 }}>
           <p className="flex items-center gap-2 text-xs font-extrabold uppercase text-primary"><span className="flex h-6 items-center gap-0.5" aria-hidden>{[10, 19, 13, 23, 12].map((height, i) => <span key={i} className="caddy-wave w-1 rounded-full bg-primary" style={{ height, animationDelay: `${i * 0.12}s` }} />)}</span> Meet your guide</p>
@@ -26,7 +27,7 @@ export function CaddyIntroduction() {
           <p className="mt-2 text-xs text-muted-foreground">Demo text guide only · no voice or live person yet · your words aren’t saved.</p>
           <div className="mt-5 flex flex-wrap gap-3">
             <Button type="button" onClick={scrollToCaddy} className="h-11 rounded-md px-5 font-extrabold"><MessageCircle aria-hidden /> Talk to Caddy <ArrowDown aria-hidden /></Button>
-            <Button asChild variant="outline" className="h-11 rounded-md px-5 font-extrabold"><a href="/book"><CalendarDays aria-hidden /> Book a visit</a></Button>
+            <Button asChild variant="outline" className="h-11 rounded-md px-5 font-extrabold"><Link to="/book"><CalendarDays aria-hidden /> Book a visit</Link></Button>
           </div>
         </motion.div>
       </div>
