@@ -9,7 +9,6 @@ import {
   HeartHandshake,
   ShieldCheck,
   Sparkles,
-  Users,
 } from "lucide-react";
 import { HeroCaddy } from "@/components/caddy/HeroCaddy";
 import { SpecializationPills } from "@/components/caddy/SpecializationPills";
@@ -26,7 +25,6 @@ import {
   PAYMENT_METHODS,
   SERVICES,
   STERILIZATION,
-  TRUST,
   WHAT_TO_BRING,
 } from "@/lib/clinic-data";
 
@@ -49,7 +47,6 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
-const TRUST_ICONS = [ClipboardList, ShieldCheck, Users, CheckCircle2];
 
 function Home() {
   return (
