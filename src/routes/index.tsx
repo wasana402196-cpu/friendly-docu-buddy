@@ -231,10 +231,20 @@ function Home() {
 
       {/* FAQ */}
       <section className="pt-16">
-        <h2 className="text-center text-3xl font-extrabold">Questions patients ask</h2>
+        <Reveal className="text-center">
+          <h2 className="text-3xl font-extrabold">Questions patients ask</h2>
+        </Reveal>
         <div className="mx-auto mt-6 max-w-3xl space-y-2">
-          {FAQ.map((f) => (
-            <FaqItem key={f.q} q={f.q} a={f.a} />
+          {FAQ.map((f, i) => (
+            <motion.div
+              key={f.q}
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.4, delay: i * 0.06, ease: "easeOut" }}
+            >
+              <FaqItem q={f.q} a={f.a} />
+            </motion.div>
           ))}
         </div>
         <p className="mt-4 text-center text-xs text-muted-foreground">
