@@ -1,11 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "motion/react";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { BookingCalendar, type DayPick } from "@/components/clinic/BookingCalendar";
+import { PaymentChoice, type PayState } from "@/components/clinic/PaymentChoice";
 import { z } from "zod";
 import { AlertTriangle, ArrowLeft, ArrowRight, CalendarX, Check, Loader2 } from "lucide-react";
 import { DemoBadge, PageShell } from "@/components/caddy/PageShell";
 import { ToothRegionIcon } from "@/components/clinic/ToothRegionIcon";
-import { CLINIC, DEMO_DAYS, DENTISTS, SERVICES, priceLabel } from "@/lib/clinic-data";
+import { CLINIC, DENTISTS, SERVICES, priceLabel } from "@/lib/clinic-data";
 
 const searchSchema = z.object({
   service: z.string().optional(),
@@ -27,7 +29,8 @@ export const Route = createFileRoute("/book")({
   component: BookPage,
 });
 
-const STEPS = ["Treatment", "Dentist", "Date & time", "Your details", "Review"];
+const STEPS = ["Treatment", "Dentist", "Date & time", "Your details", "Pay & confirm"];
+const AGREE_KEY = "cp-booking-agreed-v1";
 const UNSURE = "unsure";
 
 type Details = {
@@ -49,37 +52,42 @@ function BookPage() {
   const [dir, setDir] = useState(1);
   const [service, setService] = useState(initialService);
   const [dentist, setDentist] = useState(initialDentist || "first");
-  const [day, setDay] = useState(DEMO_DAYS[0]!.id);
+  const [day, setDay] = useState<DayPick | null>(null);
   const [slot, setSlot] = useState("");
   const [d, setD] = useState<Details>({ name: "", phone: "", contact: "WhatsApp", patientType: "new", forWhom: "self", relationship: "", reason: "", consent: false });
-  const [policy, setPolicy] = useState(false);
+  const [agreedBefore, setAgreedBefore] = useState(false);
+  const [pay, setPay] = useState<PayState>({ method: "", provider: "" });
+  useEffect(() => {
+    if (localStorage.getItem(AGREE_KEY) === "1") { setAgreedBefore(true); setD((p) => ({ ...p, consent: true })); }
+  }, []);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState<"idle" | "submitting" | "done" | "cancelled">("idle");
   const [ref, setRef] = useState("");
   const confirmed = useRef<Set<string>>(new Set());
 
   const svc = SERVICES.find((s) => s.id === service);
-  const dayObj = DEMO_DAYS.find((x) => x.id === day)!;
+  const dayLabel = day ? day.date.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" }) : "";
   const dentists = useMemo(
     () => (svc ? DENTISTS.filter((x) => x.serviceIds.includes(svc.id)) : DENTISTS),
     [svc],
   );
   const dentistObj = DENTISTS.find((x) => x.id === dentist);
-  const dupKey = `${d.phone.replace(/\D/g, "")}|${day}|${slot}`;
+  const dupKey = `${d.phone.replace(/\D/g, "")}|${day?.key}|${slot}`;
   const duplicate = confirmed.current.has(dupKey);
 
   function validate(s: number) {
-    const e: Partial<Record<"service" | "slot" | "name" | "phone" | "relationship" | "reason" | "consent" | "policy", string>> = {};
+    const e: Partial<Record<"service" | "slot" | "name" | "phone" | "relationship" | "reason" | "consent" | "pay", string>> = {};
     if (s === 0 && !service) e.service = "Choose a treatment, or “I am not sure”.";
-    if (s === 2 && !slot) e.slot = "Pick a time to continue.";
+    if (s === 2 && (!day || !slot)) e.slot = day ? "Pick a time to continue." : "Pick a date on the calendar first.";
     if (s === 3) {
       if (d.name.trim().length < 2) e.name = "Enter the patient's full name.";
       if (!/^(\+92|0)3\d{9}$/.test(d.phone.replace(/[\s-]/g, ""))) e.phone = "Use a Pakistani mobile number, e.g. 0300 1234567.";
       if (d.forWhom === "dependent" && !d.relationship.trim()) e.relationship = "Tell us your relationship to the patient.";
       if (d.reason.length > 200) e.reason = "Keep the reason under 200 characters.";
-      if (!d.consent) e.consent = "Please allow us to contact you about this appointment.";
+      if (!d.consent) e.consent = "Please tick the box to agree once — we'll remember it.";
     }
-    if (s === 4 && !policy) e.policy = "Please accept the booking policy.";
+    if (s === 4 && !pay.method) e.pay = "Choose how you'd like to pay.";
+    if (s === 4 && pay.method === "online" && !pay.provider) e.pay = "Choose an online payment option.";
     setErrors(e);
     return Object.keys(e).length === 0;
   }
@@ -96,6 +104,8 @@ function BookPage() {
     setStatus("submitting");
     await new Promise((r) => setTimeout(r, 900));
     confirmed.current.add(dupKey);
+    localStorage.setItem(AGREE_KEY, "1");
+    setAgreedBefore(true);
     setRef(`CP-${Math.random().toString(36).slice(2, 7).toUpperCase()}`);
     setStatus("done");
   }
@@ -105,7 +115,8 @@ function BookPage() {
     setStep(0);
     setService("");
     setSlot("");
-    setPolicy(false);
+    setDay(null);
+    setPay({ method: "", provider: "" });
   }
 
   const field = "field-glass mt-1 min-h-11 w-full rounded-2xl px-4 text-sm";
@@ -124,8 +135,9 @@ function BookPage() {
               </motion.span>
               <h1 className="mt-4 text-3xl font-extrabold">Request received</h1>
               <p className="mt-2 text-sm text-muted-foreground">
-                {svc?.name ?? "Consultation"} with {dentistObj?.name ?? "first available dentist"} · {dayObj.label} {slot}
+                {svc?.name ?? "Consultation"} with {dentistObj?.name ?? "first available dentist"} · {dayLabel} {slot}
               </p>
+              <p className="mt-2 text-sm font-bold">{pay.method === "counter" ? "Pay at the reception counter on arrival" : `Online payment via ${pay.provider} — share your receipt on arrival`}</p>
               <p className="mt-4 font-hero text-3xl tracking-wider">{ref}</p>
               <p className="text-xs text-muted-foreground">Your booking reference — use it to check your queue status.</p>
               <div className="mt-2"><DemoBadge>Demo — not saved, no message sent</DemoBadge></div>
@@ -237,29 +249,8 @@ function BookPage() {
               {step === 2 && (
                 <fieldset>
                   <legend className="text-xl font-extrabold">Pick a date and time</legend>
-                  <p className="mt-1 text-xs text-muted-foreground">Demo slots — these times are synthetic and not held for you.</p>
-                  <div className="mt-4 flex gap-2 overflow-x-auto pb-1">
-                    {DEMO_DAYS.map((x) => (
-                      <button key={x.id} type="button" onClick={() => { setDay(x.id); setSlot(""); }} aria-pressed={day === x.id} className={`min-h-11 shrink-0 rounded-2xl px-4 text-sm font-bold ${day === x.id ? "bg-primary text-primary-foreground" : "bg-card/70"}`}>
-                        {x.label}
-                      </button>
-                    ))}
-                  </div>
-                  {dayObj.slots.length === 0 ? (
-                    <div className="mt-6 rounded-2xl bg-secondary/70 p-6 text-center">
-                      <CalendarX aria-hidden className="mx-auto size-8 text-muted-foreground" />
-                      <p className="mt-2 font-extrabold">No slots on {dayObj.label}</p>
-                      <p className="text-sm text-muted-foreground">Try another day, or call the clinic to join the waiting list.</p>
-                    </div>
-                  ) : (
-                    <div className="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-6">
-                      {dayObj.slots.map((t) => (
-                        <motion.button key={t} type="button" whileTap={{ scale: 0.95 }} onClick={() => setSlot(t)} aria-pressed={slot === t} className={`min-h-11 rounded-2xl text-sm font-extrabold ${slot === t ? "btn-3d bg-primary text-primary-foreground" : "bg-card/70"}`}>
-                          {t}
-                        </motion.button>
-                      ))}
-                    </div>
-                  )}
+                  <p className="mt-1 text-xs text-muted-foreground">Demo calendar — times are synthetic and not held for you. Sundays closed.</p>
+                  <BookingCalendar value={day} slot={slot} onDay={(x) => { setDay(x); setSlot(""); }} onSlot={setSlot} />
                   {err("slot")}
                 </fieldset>
               )}
@@ -294,23 +285,27 @@ function BookPage() {
                     <span className="text-xs font-normal text-muted-foreground">Briefly, in your words — your dentist will examine you. {d.reason.length}/200</span>
                     {err("reason")}
                   </label>
-                  <label className="flex items-start gap-2 text-sm sm:col-span-2">
-                    <input type="checkbox" className="mt-1 size-4 accent-[var(--care)]" checked={d.consent} onChange={(e) => setD({ ...d, consent: e.target.checked })} />
-                    I agree that the clinic may contact me about this appointment by {d.contact}.
-                  </label>
+                  {agreedBefore ? (
+                    <p className="flex items-center gap-2 text-sm text-muted-foreground sm:col-span-2"><Check aria-hidden className="size-4 text-primary" /> You already agreed to our contact and booking policy — no need to tick again.</p>
+                  ) : (
+                    <label className="flex items-start gap-2 text-sm sm:col-span-2">
+                      <input type="checkbox" className="mt-1 size-4 accent-[var(--care)]" checked={d.consent} onChange={(e) => setD({ ...d, consent: e.target.checked })} />
+                      <span>The clinic may contact me by {d.contact} about this visit, and I&apos;ll cancel or reschedule at least 12 hours ahead (demo policy). <span className="text-muted-foreground">Asked once — remembered on this device.</span></span>
+                    </label>
+                  )}
                   {err("consent")}
                 </fieldset>
               )}
 
               {step === 4 && (
                 <div>
-                  <h2 className="text-xl font-extrabold">Review your booking</h2>
+                  <h2 className="text-xl font-extrabold">Check it &amp; choose how to pay</h2>
                   <dl className="mt-4 grid gap-3 rounded-3xl bg-secondary/60 p-5 text-sm sm:grid-cols-2">
                     {[
                       ["Clinic", CLINIC.name],
                       ["Treatment", svc?.name ?? "Not sure — consultation"],
                       ["Dentist", dentistObj?.name ?? "First available"],
-                      ["When", `${dayObj.label}, ${slot}`],
+                      ["When", `${dayLabel}, ${slot}`],
                       ["Duration", svc?.duration ?? "30 min"],
                       ["Indicative rate", svc ? priceLabel(svc) : "PKR 1,500"],
                       ["Patient", `${d.name}${d.forWhom === "dependent" ? ` (booked by ${d.relationship})` : ""}`],
@@ -325,11 +320,8 @@ function BookPage() {
                       <AlertTriangle aria-hidden className="mt-0.5 size-4 shrink-0" /> You already have a booking at this time with this number. Confirming again will not create a second one.
                     </p>
                   )}
-                  <label className="mt-4 flex items-start gap-2 text-sm">
-                    <input type="checkbox" className="mt-1 size-4 accent-[var(--care)]" checked={policy} onChange={(e) => setPolicy(e.target.checked)} />
-                    I accept the booking policy: cancel or reschedule at least 12 hours before (demo policy).
-                  </label>
-                  {err("policy")}
+                  <PaymentChoice value={pay} onChange={setPay} amount={svc ? priceLabel(svc) : "PKR 1,500"} />
+                  {err("pay")}
                 </div>
               )}
             </motion.div>
