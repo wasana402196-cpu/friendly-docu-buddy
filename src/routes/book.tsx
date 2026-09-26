@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { BookingCalendar, slotsFor, type DayPick } from "@/components/clinic/BookingCalendar";
+import { BookingCalendar, type DayPick } from "@/components/clinic/BookingCalendar";
 import { PaymentChoice, type PayState } from "@/components/clinic/PaymentChoice";
 import { z } from "zod";
 import { AlertTriangle, ArrowLeft, ArrowRight, CalendarX, Check, Loader2 } from "lucide-react";
