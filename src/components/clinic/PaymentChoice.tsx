@@ -13,12 +13,12 @@ const PROVIDERS = [
 /** Decorative demo QR (not scannable to any real account). */
 function DemoQr({ seed }: { seed: string }) {
   const n = 21;
-  let h = [...seed].reduce((a, c) => a * 31 + c.charCodeAt(0), 7);
+  let h = [...seed].reduce((a, c) => (Math.imul(a, 31) + c.charCodeAt(0)) | 0, 7);
   const cells: [number, number][] = [];
   const finder = (x: number, y: number) => (x < 7 && y < 7) || (x > n - 8 && y < 7) || (x < 7 && y > n - 8);
   for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) {
-    h = (h * 1103515245 + 12345) & 0x7fffffff;
-    if (!finder(x, y) && h % 2) cells.push([x, y]);
+    h = (Math.imul(h, 1103515245) + 12345) & 0x7fffffff;
+    if (!finder(x, y) && (h >> 16) % 2) cells.push([x, y]);
   }
   const eye = (x: number, y: number) => (
     <g key={`${x}${y}`}><rect x={x} y={y} width={7} height={7} fill="currentColor" /><rect x={x + 1} y={y + 1} width={5} height={5} fill="var(--card)" /><rect x={x + 2} y={y + 2} width={3} height={3} fill="currentColor" /></g>
